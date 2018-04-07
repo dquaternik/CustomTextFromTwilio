@@ -1,0 +1,1 @@
+This simple script is used to send a custom text to a chosen phone number using Twilio.
