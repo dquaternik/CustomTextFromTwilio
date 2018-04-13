@@ -1,29 +1,37 @@
+#Now has a nice GUI to make it easier to demonstrate. 
+
 # SETUP
+from tkinter import *
+from tkinter import ttk
+from send_sms import send
 import parse
-from twilio.rest import Client
 
-# Your Account SID from twilio.com/console
-account_sid = "AC9b5b706a81c3989817ad2b4182f5c287"
-# Your Auth Token from twilio.com/console
-auth_token = 
 
-client = Client(account_sid, auth_token)
+#Func def
+def func1(message,rawphone):
+	fixnum=parse.parse(rawphone)
+	send(message,fixnum)
+	
 
-# get the phone number
-rawphone = raw_input("Please input a phone number: ")
+root = Tk()
 
-# Parse the phone number
-fixedphone = parse.parse(rawphone)
-print("That's ", fixedphone, "to be E.164 compliant")
+content = ttk.Frame(root)
+frame = ttk.Frame()
+namelbl = ttk.Label(content, text="Send a Text Notification")
+numlbl = ttk.Label(content, text="Phone # to send message to:")
+meslbl = ttk.Label(content, text="Your message:")
+rawnum = ttk.Entry(content)
+mess = Text(content, height=4, width=40)
 
-# Get the message
-mess = raw_input("What's your message?\n")
+senbut = ttk.Button(content, text="Send!", command = (lambda: func1(mess.get("1.0",END),rawnum.get())))
 
-# Finally Send the message
-message = client.messages.create(
-    to=fixedphone,
-    from_="+16504603660",
-    body=mess)
+content.grid(column=0, row=0)
+frame.grid(column=1, row=0, columnspan=5, rowspan=5)
+namelbl.grid(column=1, row=0, columnspan=2)
+numlbl.grid(column=0, row=1, columnspan=2)
+meslbl.grid(column=1, row=2)
+rawnum.grid(column=2, row=1)
+mess.grid(column=1, row=3)
+senbut.grid(column=2, row=3)
 
-print(message.sid)
-print("Message Sent")
+root.mainloop()
